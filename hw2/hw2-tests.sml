@@ -19,17 +19,21 @@ fun tests_passed(t: string, tests: bool list) =
     count = len
   end;
 
-val test1_0=all_except_option("3",["4","9","10"]) = NONE;
+val test1_0=all_except_option("",["4","9","10"]) = NONE;
 val test1_1=all_except_option("3",["4","9","10"]) = NONE;
 val test1_2=all_except_option("3",["4","9","3","10"]) = SOME ["4","9","10"];
 val test1_3=all_except_option("3",[]) = NONE;
 val test1_4=all_except_option("3",["3","4","9","10"])  = SOME ["4","9","10"];
 val test1_5=all_except_option("3",["4","9","10","3"]) = SOME ["4","9","10"];
 val test1_6=all_except_option("3",["3"]) = SOME [];
-val tests1 = [test1_1, test1_2, test1_3, test1_4, test1_5, test1_6];
+val tests1 = [test1_0, test1_1, test1_2, test1_3, test1_4, test1_5, test1_6];
 
 val t1 = tests_passed("1", tests1);
 
+
+val test2_0=get_substitutions1([["Dan","Daniella", "Stinky"],["Sam","Samuel","Sammy"],["Danny", "Dan"],["Dan","D"]],
+                               "Dan")
+				= ["Daniella", "Stinky", "Danny", "D"]
 val test2_1=get_substitutions1([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]],
                                "Fred")
             = ["Fredrick","Freddie","F"];
@@ -43,10 +47,13 @@ val test2_4=get_substitutions1([["Neo","New", "Nuovo"],["Panzer","Tank","Sherman
                                "Neo")
             = ["New","Nuovo"]
 
-val tests2 = [test2_1, test2_2, test2_3, test2_4];
+val tests2 = [test2_0, test2_1, test2_2, test2_3, test2_4];
 
 val t2 = tests_passed("2", tests2);
 
+val test3_0=get_substitutions2([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]],
+                               "")
+            = [];
 val test3_1=get_substitutions2([["Fred","Fredrick"],["Elizabeth","Betty"],["Freddie","Fred","F"]],
                                "Fred")
             = ["Fredrick","Freddie","F"];
@@ -60,9 +67,20 @@ val test3_4=get_substitutions1([["Neo","New", "Nuovo"],["Panzer","Tank","Sherman
                                "Neo")
             = ["New","Nuovo"];
 
-val tests3 = [test3_1, test3_2, test3_3, test3_4];
+val tests3 = [test3_0, test3_1, test3_2, test3_3, test3_4];
 
 val t3 = tests_passed("3", tests3);
+
+val test4_0=similar_names([
+                             ["Brian","Brian Brian Kibler"],
+                             ["Elizabeth","Betty"],
+                             ["Please Dont Call Me Brian 'Brian Kibler'","Brian","Brian 'Please Dont Call Me Brian 'Brian Kibler' Kibler"]
+                         ], {first="Brian", middle="", last="Kibler"}) =
+            [{first="Brian",last="Kibler",middle=""},
+             {first="Brian Brian Kibler",last="Kibler",middle=""},
+				 {first="Please Dont Call Me Brian 'Brian Kibler'",last="Kibler",middle=""},
+             {first="Brian 'Please Dont Call Me Brian 'Brian Kibler' Kibler",last="Kibler",middle=""}
+             ];
 
 val test4_1=similar_names([
                              ["Thomas", "Neo"],
@@ -83,7 +101,7 @@ val test4_2=similar_names([
              {first="Freddie",last="Smith",middle="W"},
              {first="F",last="Smith",middle="W"}];
 
-val tests4 = [test4_1, test4_2];
+val tests4 = [test4_0, test4_1, test4_2];
 
 val t4 = tests_passed("4", tests4);
 
@@ -92,15 +110,17 @@ val DiamondsJack = (Diamonds,Jack);
 val Hearts10 = (Hearts, Num 10);
 val Spades5 = (Spades,Num 5);
 
+val test5_0= card_color(Hearts, Num 2) = Red;
 val test5_1= card_color(ClubAce) = Black;
 val test5_2= card_color(DiamondsJack) = Red;
 val test5_3= card_color(Hearts10) = Red;
 val test5_4= card_color(Spades5) = Black;
 
-val tests5 = [test5_1, test5_2, test5_3, test5_4];
+val tests5 = [test5_0, test5_1, test5_2, test5_3, test5_4];
 
 val t5 = tests_passed("5", tests5);
 
+val test6_0= card_value(Hearts, Num 2) = 2;
 val test6_1= card_value(ClubAce) = 11;
 val test6_2= card_value(DiamondsJack) = 10;
 val test6_3= card_value(Hearts10) = 10;
@@ -108,7 +128,7 @@ val test6_4= card_value(Spades5) = 5;
 val test6_5= card_value(Spades, Queen) = 10;
 val test6_6= card_value(Spades, King) = 10;
 
-val tests6 = [test6_1, test6_2, test6_3, test6_4];
+val tests6 = [test6_0, test6_1, test6_2, test6_3, test6_4];
 val t6 = tests_passed("6", tests6);
 
 
@@ -120,6 +140,7 @@ val cards3 = [(Clubs, Ace), (Diamonds, Num 10), (Spades, Num 5), (Clubs, Num 9)]
 val cards4 = [(Clubs, Ace), (Clubs, Num 10), (Clubs, Num 5), (Clubs, Num 2)];
 val cards5 = [(Diamonds, Ace), (Diamonds, Num 10), (Diamonds, Queen), (Diamonds, Jack), (Diamonds,King)];
 
+val test7_0 = remove_card([] @ [(Clubs, Ace), (Diamonds, Num 10), (Spades, Num 5), (Clubs, Num 9)], (Clubs, Num 9), notFound) = [(Clubs, Ace), (Diamonds,Num 10),(Spades,Num 5)];
 val test7_1 = remove_card(cards3, (Clubs, Ace), notFound) = [(Diamonds,Num 10),(Spades,Num 5),(Clubs,Num 9)];
 val test7_2 = remove_card(cards1, (Spades, Num 4), notFound) = [(Clubs, Ace), (Diamonds, Num 10), (Clubs, Num 4)];
 val test7_3 = remove_card(cards3, (Clubs, Num 9), notFound) = [(Clubs,Ace),(Diamonds,Num 10),(Spades,Num 5)];
@@ -127,25 +148,27 @@ val test7_4 = remove_card(cards5, (Diamonds, Ace), notFound) = [(Diamonds, Num 1
 (* check that exception is raised*)
 val test7_5 = remove_card(cards2, (Clubs, Ace), notFound) = [(Clubs, Ace)] handle notFound => true;
 
-val tests7 = [test7_1, test7_2, test7_3, test7_4,test7_5];
+val tests7 = [test7_0, test7_1, test7_2, test7_3, test7_4,test7_5];
 val t7 = tests_passed("7", tests7);
 
+val test8_0 = all_same_color([(Clubs, Ace)]) = true;
 val test8_1 = all_same_color(cards1) = false;
 val test8_2 = all_same_color(cards2) = true;
 val test8_3 = all_same_color(cards3) = false;
 val test8_4 = all_same_color(cards5) = true;
 val test8_5 = all_same_color(cards5) = true;
 
-val tests8 = [test8_1, test8_2, test8_3, test8_4,test8_5];
+val tests8 = [test8_0, test8_1, test8_2, test8_3, test8_4,test8_5];
 val t8 = tests_passed("8", tests8);
 
+val test9_0 = sum_cards([(Clubs, Ace), (Spades, Ace), (Diamonds, Ace), (Hearts, Ace), (Clubs, Ace), (Clubs, Ace), (Clubs, Num 3)]) = 69;
 val test9_1 = sum_cards(cards1) = 29;
 val test9_2 = sum_cards(cards2) = 0;
 val test9_3 = sum_cards(cards3) = 35;
 val test9_4 = sum_cards(cards4) = 28;
 val test9_5 = sum_cards(cards5) = 51;
 
-val tests9 = [test9_1, test9_2, test9_3, test9_4,test9_5];
+val tests9 = [test9_0, test9_1, test9_2, test9_3, test9_4,test9_5];
 val t9 = tests_passed("9", tests9);
 
 val test10_1 = score(cards1, 1) = 28 * 2;
