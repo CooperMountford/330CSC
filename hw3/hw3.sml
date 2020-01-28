@@ -35,9 +35,12 @@ fun g f1 f2 p =
 
 (**** put all your code after this line ****)
 
+<<<<<<< HEAD
 infix !>
 fun x !> f = f x
 
+=======
+>>>>>>> a4ff94b5c35b06cdcdcf827adabd9c427f261cae
 fun only_capitals xs =
 	List.filter(fn x => Char.isUpper(String.sub(x, 0))) xs
 
@@ -65,6 +68,7 @@ fun longest_string4 xs =
 		like_longest2 xs
 	end
 
+<<<<<<< HEAD
 
 
 
@@ -72,6 +76,35 @@ fun longest_string4 xs =
 
 
 
+=======
+fun longest_capitalized xs =
+	let
+		val first_cap = (longest_string1) o (only_capitals)
+	in
+		first_cap xs
+	end
+
+fun rev_string s = ((String.implode) o (List.rev) o (String.explode)) s
+
+fun first_answer f xs =
+	case xs of
+		[] => raise NoAnswer
+		| v::vs => case f(v) of
+			SOME v => v
+			| NONE => first_answer f vs
+
+fun all_answers f xs =
+	let
+		fun helper(f, xs, acc) =
+			case xs of
+				[] => SOME acc
+				| x::xs => case f(x) of
+					NONE => NONE
+					| SOME x => helper(f, xs, x @ acc)
+	in
+		helper(f, xs, [])
+	end
+>>>>>>> a4ff94b5c35b06cdcdcf827adabd9c427f261cae
 
 
 

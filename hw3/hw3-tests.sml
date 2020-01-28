@@ -1,12 +1,12 @@
 use "hw3.sml";
 
 fun tests_passed(t: string, tests: bool list) =
-  let 
+  let
     fun toInt (b: bool) =
       if b then 1 else 0;
     val len = length tests
     val count = foldl op+ 0 (map toInt tests)
-                      
+
     fun add_index(xs) =
       let
         fun add(i, xs) =
@@ -16,7 +16,7 @@ fun tests_passed(t: string, tests: bool list) =
       in
         add(1,xs)
       end
-          
+
     fun report_failed(tests_with_i) =
       let
         fun report_each(xs) =
@@ -33,10 +33,10 @@ fun tests_passed(t: string, tests: bool list) =
         print("\n**Test " ^ t ^ " failed!!!!!\n   "^ Int.toString(len -count) ^ " out of " ^ Int.toString(len) ^ " failed\n\n");
         List.length (report_each(tests_with_i)) = 0
       end
-        
+
   in
     if (count = len)
-    then 
+    then
       (print ("\n**Test " ^ t ^ " passed\n   "^ Int.toString(count) ^ " out of " ^ Int.toString(len) ^ "\n\n");
        count = len)
     else
@@ -46,7 +46,7 @@ fun tests_passed(t: string, tests: bool list) =
 
 val words = ["This","the","A","Hello","World","not"];
 
-val test_only_capitals = 
+val test_only_capitals =
     ("1. test_only_capitals",[
       only_capitals(words) = ["This","A","Hello","World"],
       only_capitals ["A","B","C"] =  ["A","B","C"],
@@ -59,7 +59,7 @@ val t1 = tests_passed test_only_capitals;
 
 val lwords = ["This","the","A","Hello","World","not","long string","loooong string"]
 val swords = ["the","not","cat","dog"] (* check first/last etc *)
-                 
+
 val test_longest_string1 =
     ("2. test_longest_string1",[
       longest_string1(lwords) = "loooong string",
@@ -136,7 +136,7 @@ val test_rev_string =
       rev_string "anna" = "anna",
       rev_string "" = ""
     ]);
-        
+
 val t6 = tests_passed test_rev_string;
 
 val test_first_answer =
@@ -148,7 +148,7 @@ val test_first_answer =
       first_answer (fn x => if (x mod 2) = 0 then SOME x else NONE) [1,1,5,3] = 10 handle NoAnswer => true,
       first_answer (fn x => if String.size(x) = 3 then SOME x else NONE) ["this", "is", "the", "end", "of", "the", "world"] = "the"
     ]);
-        
+
 val t7 = tests_passed test_first_answer;
 
 (*
