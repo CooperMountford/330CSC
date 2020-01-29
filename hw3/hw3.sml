@@ -18,6 +18,21 @@ datatype valu = Const of int
 
 (* Description of g:
 
+	The binding for g is (unit -> int) -> (string -> int) -> pattern -> int
+	This means that it takes two functions:
+		The first accepts the trivial unit type and returning an int
+		The second accepts a string and returns an int
+	These are passed to the pattern datatype
+	And we can see the case statment has all of the types ultimately result as an int
+
+	f1 accepts unit because it will compare its type to see if its a wildcard
+	f2 accepts a string that is passed as a variable from a list
+	p is a pattern which matches the imput with its case statments
+
+	we set f1 as fn() => 1 so that it patten matches with Wildcard and adds 1 to the acc in the fold
+	we set f2 as fn(x) => 0 so that the strings in the list can be passed and checked for being a Wildcard
+
+
 *)
 
 fun g f1 f2 p =
@@ -35,12 +50,7 @@ fun g f1 f2 p =
 
 (**** put all your code after this line ****)
 
-<<<<<<< HEAD
-infix !>
-fun x !> f = f x
 
-=======
->>>>>>> a4ff94b5c35b06cdcdcf827adabd9c427f261cae
 fun only_capitals xs =
 	List.filter(fn x => Char.isUpper(String.sub(x, 0))) xs
 
@@ -68,15 +78,6 @@ fun longest_string4 xs =
 		like_longest2 xs
 	end
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-=======
 fun longest_capitalized xs =
 	let
 		val first_cap = (longest_string1) o (only_capitals)
@@ -100,11 +101,16 @@ fun all_answers f xs =
 				[] => SOME acc
 				| x::xs => case f(x) of
 					NONE => NONE
-					| SOME x => helper(f, xs, x @ acc)
+					| SOME x => helper(f, xs, acc @ x)
 	in
 		helper(f, xs, [])
 	end
->>>>>>> a4ff94b5c35b06cdcdcf827adabd9c427f261cae
+
+fun count_wildcards p = g (fn() => 1) (fn(x) => 0) p
+
+fun count_wild_and_variable_lengths p =
+
+
 
 
 
